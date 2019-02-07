@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
+#include "Components/InputComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -28,24 +29,30 @@ void ATank::Tick(float DeltaTime)
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	InputComponent->BindAction("Turret_Clockwise", IE_Pressed, this, &ATank::RotateTurret);
-	InputComponent->BindAction("Counter_Clockwise", IE_Pressed, this, &ATank::CounterRotateTurret);
+	PlayerInputComponent->BindAxis("Rotate_Turret", this, &ATank::RotateTurret);
+	PlayerInputComponent->BindAxis("Rotate_Barrel", this, &ATank::RotateBarrel);
 }
 
-void ATank::RotateTurret()
+void ATank::RotateTurret(float Speed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("RotateTurret Called"));
-	Turret->SetRelativeRotation(FRotator(0, 40.f, 0));
+	if (!Turret) { return; }
+	Turret->AddRelativeRotation(FRotator(0, Speed, 0));	
 }
 
-void ATank::CounterRotateTurret()
+void ATank::RotateBarrel(float Speed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("CounterRotateTurret Called"));
-	Turret->SetRelativeRotation(FRotator(0, -40.f, 0));
+	if (!Barrel) { return; }
+	Barrel->AddRelativeRotation(FRotator(Speed, 0, 0));
 }
 
 void ATank::SetTurretChildActor(UChildActorComponent * TurretFromBP)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetTurretChildActor Called"));
 	Turret = TurretFromBP;
 }
+
+void ATank::SetBarrelChildActor(UChildActorComponent * BarrelFromBP)
+{
+	Barrel = BarrelFromBP;
+}
+
+
