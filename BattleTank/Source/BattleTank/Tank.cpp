@@ -28,12 +28,24 @@ void ATank::Tick(float DeltaTime)
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	InputComponent->BindAction("Turret_clockwise", IE_Pressed, this, &ATank::RotateTurret);
+	InputComponent->BindAction("Turret_Clockwise", IE_Pressed, this, &ATank::RotateTurret);
+	InputComponent->BindAction("Counter_Clockwise", IE_Pressed, this, &ATank::CounterRotateTurret);
 }
 
 void ATank::RotateTurret()
 {
 	UE_LOG(LogTemp, Warning, TEXT("RotateTurret Called"));
-	// SetRelativeRotation
-	// UChildActorComponent
+	Turret->SetRelativeRotation(FRotator(0, 40.f, 0));
+}
+
+void ATank::CounterRotateTurret()
+{
+	UE_LOG(LogTemp, Warning, TEXT("CounterRotateTurret Called"));
+	Turret->SetRelativeRotation(FRotator(0, -40.f, 0));
+}
+
+void ATank::SetTurretChildActor(UChildActorComponent * TurretFromBP)
+{
+	UE_LOG(LogTemp, Warning, TEXT("SetTurretChildActor Called"));
+	Turret = TurretFromBP;
 }
