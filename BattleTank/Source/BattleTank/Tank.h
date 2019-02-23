@@ -34,6 +34,7 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
 	UFUNCTION(BlueprintCallable, Category = Tank)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
@@ -43,6 +44,7 @@ private:
 	UFUNCTION(BlueprintCallable, Category = Tank)
 	void Fire();
 
+private:
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 100000.f; // TODO find sensible default
 
@@ -51,4 +53,8 @@ private:
 
 	// Local barrel reference for spawning projectile
 	UTankBarrel* Barrel = nullptr;
+
+	float ReloadTimeInSeconds = 3;
+
+	double LastFireTime = 0;
 };
